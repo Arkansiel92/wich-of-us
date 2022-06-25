@@ -14,11 +14,20 @@ const io = new Server(server, {
     }
 });
 
+const rooms = []
+
 io.on("connection", (socket) => {
     console.log(socket.id);
 
     socket.on("disconnect", () => {
         console.log("user disconnected", socket.id);
+    })
+
+    socket.on("create_room", (room) => {
+        console.log(room)
+        rooms.push(room)
+
+        socket.to(room.ID).emit("load_rooms", rooms)
     })
 })
 
