@@ -24,10 +24,12 @@ io.on("connection", (socket) => {
     })
 
     socket.on("create_room", (room) => {
-        console.log(room)
         rooms.push(room)
+    })
 
-        socket.to(room.ID).emit("load_rooms", rooms)
+    socket.on("check_rooms", () => {
+        console.log("chargement des rooms...")
+        io.emit("load_rooms", rooms)
     })
 })
 
