@@ -1,15 +1,21 @@
-import './App.css';
 import { BrowserRouter, Routes, Route} from "react-router-dom";
-import io from "socket.io-client";
+import GameSettings from "./pages/GameSettings";
 import Home from './pages/Home';
 
-const socket = io.connect("http://localhost:3001");
-
 function App() {
+
+  const player = {
+    username: "",
+    host: false,
+    roomID: null,
+    points: 0
+  }
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home player = {player} />} />
+        <Route path="/GameSettings" element={<GameSettings player={player}/>} />
       </Routes>
     </BrowserRouter>
   );

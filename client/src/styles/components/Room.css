@@ -1,0 +1,16 @@
+.rooms-div {
+    margin: 50px;
+}
+
+.room-list {
+    display: inline;
+    border: solid 2px;
+    border-radius: 16px;
+    padding: 20px;
+    margin: 100px;
+}
+
+.room-list li {
+    display: inline;
+    padding: 20px;
+}

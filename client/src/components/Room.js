@@ -3,11 +3,11 @@ import React from 'react';
 const Room = ({ room }) => {
 
     return (
-        <div>
-            <ul>
+        <div className='rooms-div'>
+            <ul className='room-list'>
                 <li>Nom de l'host : {room.author}</li>
                 <li>salle : {room.id}</li>
-                <li>Nombre de joueur : 1 / {room.nbrPlayers} </li>
+                <li>Nombre de joueurs : {room.players.length} sur {room.nbrPlayers} </li>
                 <button>Rejoindre</button>
             </ul>
         </div>

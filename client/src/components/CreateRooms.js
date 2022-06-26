@@ -1,34 +1,56 @@
 import React from 'react';
 import io from "socket.io-client";
+import { useNavigate } from "react-router-dom";
 
 const socket = io.connect("http://localhost:3001");
 
-const CreateRooms = () => {
+const CreateRooms = ({player}) => {
+
+    const navigate = useNavigate();
 
     const [username, setUsername] = React.useState("")
-    const [nbrPlayers, setNbrPlayers] = React.useState(4)
+    const [msg, setMsg] = React.useState("")
+    const [nbrPlayers, setNbrPlayers] = React.useState(2)
 
     const create_room = () => {
         if (username !== "") {
+
+            player.username = username
+            player.host = true
+
             var token = Math.random().toString(36).substring(2, 9);
             const roomData = {
                 id : token + token,
-                author : username,
+                author : player.username,
                 players : [username],
                 nbrPlayers : nbrPlayers
             };
+
+            player.roomID = roomData.id
     
             socket.emit("create_room", roomData)
+
+            navigate("/GameSettings");
+        } else {
+            setMsg("Entrez un nom d'utilisateur valide.")
         }
     }
 
     return (
-        <div>
-            <div>
-                <input type="text" onChange={(e) => {setUsername(e.target.value)}} placeholder="Nom d'utilisateur (obligatoire)" required/>
-                <input type="number" value={nbrPlayers} onChange={(e) => {setNbrPlayers(e.target.value)}} placeholder="Nombre de joueur" required/>
-                <button onClick={create_room}>Créer une room</button>
+        <div className='header-create-room'>
+            <div className='create-room'>
+                <h1 className='title'>Wich of us</h1>
+                <li><input type="text" onChange={(e) => {setUsername(e.target.value)}} placeholder="Nom d'utilisateur" required/></li>
+                <label htmlFor="">Nombre de joueur : <select value={nbrPlayers} onChange={(e) => {setNbrPlayers(e.target.value)}} >
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                </select></label>
+                <li><button onClick={create_room}>Créer une partie</button></li>
             </div>
+            <p>{msg}</p>
         </div>
     );
 };

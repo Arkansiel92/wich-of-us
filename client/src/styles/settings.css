@@ -1,0 +1,12 @@
+@font-face {
+    font-family: "JosefinSans-Bold";
+    src: url("./fonts/JosefinSans-Bold.ttf");
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    background-color: #5C6F68;
+    color: #242E2B;
+    font-family: "JosefinSans-Bold";
+}
