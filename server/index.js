@@ -31,6 +31,21 @@ io.on("connection", (socket) => {
         console.log("chargement des rooms...")
         io.emit("load_rooms", rooms)
     })
+
+    socket.on("join_room", (player) => {
+        console.log(`le joueur ${player.username} a rejoint la partie`)
+        rooms.forEach(room => {
+            if (room.id === player.roomID) {
+                if (room.players.includes(player.username)) {
+                    return;
+                } else {
+                    room.players.push(player.username)
+                }
+                
+            }
+            console.log(room)
+        });
+    })
 })
 
 

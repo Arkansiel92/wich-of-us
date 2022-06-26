@@ -22,7 +22,7 @@ const Home = ({ player }) => {
     return (
         <div>
             <CreateRooms player={player}/>
-            <RoomsOnline rooms={rooms} />
+            <RoomsOnline rooms={rooms} player={player} />
         </div>
     );
 };
