@@ -43,7 +43,16 @@ io.on("connection", (socket) => {
                 }
                 
             }
-            console.log(room)
+        });
+    })
+
+    socket.on("settings_room", (player) => {
+        console.log("récupération des données de la room...");
+        rooms.forEach(room => {
+            if (room.id == player.roomID) {
+                console.log(room)
+                io.emit("receive_settings", room)
+            }
         });
     })
 })

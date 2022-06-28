@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from "react-router-dom";
-import io from "socket.io-client";
+import {socketContext} from "../context/socket"
 
-const socket = io.connect("http://localhost:3001");
 
 const Room = (props) => {
+
+    const socket = useContext(socketContext);
 
     const room = props.room;
     const player = props.player;
@@ -12,17 +13,17 @@ const Room = (props) => {
     const navigate = useNavigate();
 
     const joinRoom = () => {
-        player.roomID = room.id;
-        socket.emit("join_room", player);
-        navigate("/GameSettings");
+        if (room.players.length < room.nbrPlayers) {
+            player.roomID = room.id;
+            socket.emit("join_room", player);
+            navigate("/GameSettings");
+        }
+        console.log(room.players.length)
+        console.log(room.nbrPlayers);
     };
 
     return (
         <div className='rooms-div'>
-                {player.username !== room.author 
-                   ? <p>pas le même username {player.username}</p>
-                   : <p>le même username {player.username}</p>
-                }
             <ul className='room-list'>
                 <li>Nom de l'host : {room.author}</li>
                 <li>salle : {room.id}</li>

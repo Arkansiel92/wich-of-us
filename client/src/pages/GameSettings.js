@@ -1,12 +1,30 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
+import CardPlayer from '../components/CardPlayer';
+import {socketContext} from "../context/socket"
+
 
 const GameSettings = ({player}) => {
 
-    console.log(player)
+    const socket = useContext(socketContext);
+
+    const [room, setRoom] = React.useState("");
+
+    useEffect(() => {
+        if (room === "") {
+            socket.emit("settings_room", player)
+        }
+
+        socket.on("receive_settings", (room) => {
+            setRoom(room);
+        })
+    })
+    console.log(room.players);
     return (
         <div>
-            <h1>Paramètre de la partie</h1>
-            <p>host de la partie : {player.username} dans la room : {player.roomID}</p>
+            <div>
+                <h1>Paramètre de la partie</h1>
+                <p>host de la partie : {room.author} dans la room : {room.id} </p>
+            </div>
         </div>
     );
 };

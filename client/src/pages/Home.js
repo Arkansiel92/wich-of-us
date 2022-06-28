@@ -1,29 +1,32 @@
-import React, { useEffect } from 'react';
-import io from "socket.io-client";
+import React, { useContext, useEffect } from 'react';
+import {socketContext} from "../context/socket"
 import CreateRooms from '../components/CreateRooms';
 import RoomsOnline from '../components/RoomsOnline';
 
-const socket = io.connect("http://localhost:3001");
-
 const Home = ({ player }) => {
 
-    const [rooms, setRooms] = React.useState([])
+    const socket = useContext(socketContext);
+
+    const [rooms, setRooms] = React.useState([]);
 
     useEffect(() => {
+        socket.emit("check_rooms", () => {
+
+        })
+
+        
         socket.on("load_rooms", (data) => {
             setRooms(data);
         })
 
-        socket.emit("check_rooms", () => {
-
-        })
-    }, [])
+    }, [socket])
 
     return (
         <div>
             <CreateRooms player={player}/>
             <RoomsOnline rooms={rooms} player={player} />
         </div>
+
     );
 };
 

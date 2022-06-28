@@ -1,10 +1,12 @@
-import React from 'react';
-import io from "socket.io-client";
+import React, { useContext } from 'react';
 import { useNavigate } from "react-router-dom";
+import {socketContext} from "../context/socket";
 
-const socket = io.connect("http://localhost:3001");
+const CreateRooms = (props) => {
 
-const CreateRooms = ({player}) => {
+    const socket = useContext(socketContext);
+
+    const player = props.player;
 
     const navigate = useNavigate();
 
@@ -39,7 +41,7 @@ const CreateRooms = ({player}) => {
     return (
         <div className='header-create-room'>
             <div className='create-room'>
-                <h1 className='title'>Wich of us</h1>
+                <h1 className='title'>Qui de nous ?</h1>
                 <li><input type="text" onChange={(e) => {setUsername(e.target.value)}} placeholder="Nom d'utilisateur" required/></li>
                 <label htmlFor="">Nombre de joueur : <select value={nbrPlayers} onChange={(e) => {setNbrPlayers(e.target.value)}} >
                     <option value="2">2</option>
