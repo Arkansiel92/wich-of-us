@@ -21,10 +21,24 @@ io.on("connection", (socket) => {
 
     socket.on("disconnect", () => {
         console.log("user disconnected", socket.id);
+        rooms.forEach(room => {
+            room.players.forEach((player, index) => {
+                if (socket.id == player) {
+                    room.players.splice(index, 1)
+                }             
+            })
+        });
     })
 
-    socket.on("create_room", (room) => {
-        rooms.push(room)
+    socket.on("create_room", (nbrPlayers) => {
+        var token = Math.random().toString(36).substring(2, 9);
+        const roomData = {
+            id : token + token,
+            author : socket.id,
+            players : [socket.id],
+            nbrPlayers : nbrPlayers
+        };
+        rooms.push(roomData)
     })
 
     socket.on("check_rooms", () => {
@@ -33,24 +47,25 @@ io.on("connection", (socket) => {
     })
 
     socket.on("join_room", (player) => {
-        console.log(`le joueur ${player.username} a rejoint la partie`)
+        console.log(`un joueur a rejoint la partie`)
         rooms.forEach(room => {
             if (room.id === player.roomID) {
-                if (room.players.includes(player.username)) {
+                if (room.players.includes(socket.id)) {
                     return;
                 } else {
-                    room.players.push(player.username)
+                    room.players.push(socket.id)
                 }
                 
             }
         });
     })
 
-    socket.on("settings_room", (player) => {
-        console.log("récupération des données de la room...");
+    socket.on("settings_room", () => {
+        console.log(`récupération des données de la room... de la part du socket : ${socket.id}`);
         rooms.forEach(room => {
-            if (room.id == player.roomID) {
-                console.log(room)
+            console.log(room)
+            if (room.players.includes(socket.id)) {
+                
                 io.emit("receive_settings", room)
             }
         });

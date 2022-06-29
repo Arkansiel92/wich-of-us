@@ -18,8 +18,6 @@ const Room = (props) => {
             socket.emit("join_room", player);
             navigate("/GameSettings");
         }
-        console.log(room.players.length)
-        console.log(room.nbrPlayers);
     };
 
     return (

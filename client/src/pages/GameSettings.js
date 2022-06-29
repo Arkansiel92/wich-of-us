@@ -11,11 +11,13 @@ const GameSettings = ({player}) => {
 
     useEffect(() => {
         if (room === "") {
-            socket.emit("settings_room", player)
+            console.log("envoie de la demande de donnée de la room");
+            socket.emit("settings_room");
         }
 
         socket.on("receive_settings", (room) => {
             setRoom(room);
+            console.log("récupération des données de la room");
         })
     })
     console.log(room.players);
@@ -25,6 +27,9 @@ const GameSettings = ({player}) => {
                 <h1>Paramètre de la partie</h1>
                 <p>host de la partie : {room.author} dans la room : {room.id} </p>
             </div>
+            {room.players.map((playerOnRoom, index) => (
+                <CardPlayer key={index} player={playerOnRoom} />
+            ))}
         </div>
     );
 };
