@@ -3,7 +3,7 @@ import {socketContext} from "../context/socket"
 import CreateRooms from '../components/CreateRooms';
 import RoomsOnline from '../components/RoomsOnline';
 
-const Home = ({ player }) => {
+const Home = () => {
 
     const socket = useContext(socketContext);
 
@@ -12,9 +12,7 @@ const Home = ({ player }) => {
     useEffect(() => {
         socket.emit("check_rooms", () => {
 
-        })
-
-        
+        })     
         socket.on("load_rooms", (data) => {
             setRooms(data);
         })
@@ -23,10 +21,9 @@ const Home = ({ player }) => {
 
     return (
         <div>
-            <CreateRooms player={player}/>
-            <RoomsOnline rooms={rooms} player={player} />
+            <CreateRooms/>
+            <RoomsOnline rooms={rooms} />
         </div>
-
     );
 };
 

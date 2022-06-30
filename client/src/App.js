@@ -5,20 +5,12 @@ import {socket, socketContext} from "./context/socket"
 
 function App() {
 
-  const player = {
-    username: "",
-    host: false,
-    roomID: null,
-    ready: false,
-    points: 0
-  }
-
   return (
     <socketContext.Provider value={socket}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home player = {player} />} />
-          <Route path="/GameSettings" element={<GameSettings player={player}/>} />
+          <Route path="/" element={<Home/>} />
+          <Route path="/GameSettings" element={<GameSettings/>} />
         </Routes>
       </BrowserRouter>
     </socketContext.Provider>

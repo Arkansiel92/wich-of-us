@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import {socketContext} from "../context/socket";
 
-const CreateRooms = ({player}) => {
+const CreateRooms = () => {
     const socket = useContext(socketContext);
 
 
@@ -11,7 +11,6 @@ const CreateRooms = ({player}) => {
     const [nbrPlayers, setNbrPlayers] = React.useState(2)
 
     const create_room = () => {
-        player.host = true   
         socket.emit("create_room", nbrPlayers)
         navigate("/GameSettings");
     }
@@ -20,7 +19,7 @@ const CreateRooms = ({player}) => {
         <div className='header-create-room'>
             <div className='create-room'>
                 <h1 className='title'>Qui de nous ?</h1>
-                <label htmlFor="">Nombre de joueur : <select value={nbrPlayers} onChange={(e) => {setNbrPlayers(e.target.value)}} >
+                <label htmlFor="">Nombre de joueurs : <select value={nbrPlayers} onChange={(e) => {setNbrPlayers(e.target.value)}} >
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>

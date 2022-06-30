@@ -3,19 +3,15 @@ import { useNavigate } from "react-router-dom";
 import {socketContext} from "../context/socket"
 
 
-const Room = (props) => {
+const Room = ({room}) => {
 
     const socket = useContext(socketContext);
-
-    const room = props.room;
-    const player = props.player;
 
     const navigate = useNavigate();
 
     const joinRoom = () => {
         if (room.players.length < room.nbrPlayers) {
-            player.roomID = room.id;
-            socket.emit("join_room", player);
+            socket.emit("join_room", room.id);
             navigate("/GameSettings");
         }
     };

@@ -4,9 +4,9 @@ const CardPlayer = ({player}) => {
     return (
         <div>
             <ul>
-                <li>Nom du joueur : {player}</li>
-                <li></li>
-                <li></li>
+                <li>Socket : {player}</li>
+                <li><input type="text" placeholder='Nom du joueur' required/></li>
+                <li><input type="button" value="Prêt" /></li>
             </ul>
         </div>
     );
