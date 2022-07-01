@@ -3,8 +3,22 @@ h1 {
     font-size: 64px;
 }
 
+.card-players {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    height: 400px;
+}
+
 .btnGame {
+    text-align: center;
     width: auto;
     align-items: center;
     margin: auto;
+
+}
+
+.btnGame input {
+    font-size: 32px;
 }

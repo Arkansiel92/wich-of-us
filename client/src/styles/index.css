@@ -3,5 +3,7 @@
 @import "./components/RoomsOnline.css";
 @import "./components/Room.css";
 @import "./components/CardPlayers.css";
+@import "./components/Player.css";
 @import "./pages/Home.css";
 @import "./pages/GameSettings.css";
+@import "./pages/GamePlay.css"

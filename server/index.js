@@ -39,7 +39,8 @@ io.on("connection", (socket) => {
         name : "",
         host : false,
         ready : false,
-        points : 0
+        points : 0,
+        vote : "",
     };
     console.log(socket.id);
 
@@ -106,6 +107,12 @@ io.on("connection", (socket) => {
     socket.on("settings_questions", () => {
         rooms.forEach(room => {
             if (room.sockets.includes(socket.id)) {
+
+                room.players.forEach(player => {
+                    player.ready = false; // remise à zéro de la préparation des participants
+                });
+
+                room.playersReady = 0;
                 io.emit("receive_questions", questions)
             };
         });
@@ -119,7 +126,10 @@ io.on("connection", (socket) => {
                         player.name = data.name;
                         player.ready = true;
                         room.playersReady++;
+                        console.log("Le joueur est pret "+room.playersReady);
+                        console.log(room);
                         if (room.playersReady === room.nbrPlayers) {
+                            console.log("tous les joueurs sont prêt")
                             io.emit("readyToPlay", true);
                         }
                     } else {
@@ -127,7 +137,7 @@ io.on("connection", (socket) => {
                         room.playersReady--;
                         io.emit("readyToPlay", false);
                     };
-                    io.emit("receive_settings", room)
+                    io.emit("receive_settings", room);
                 };  
             });
         });
@@ -144,7 +154,23 @@ io.on("connection", (socket) => {
         }); 
 
         
-    })
+    });
+
+    socket.on("vote", (data) => {
+        rooms.forEach(room =>{
+            if (data.room == room.id) {
+                room.players.forEach(player => {
+                    if (data.player == player.socket) {
+                        player.vote = data.name
+                        player.ready = true;
+                        room.sockets.forEach(socketP => {
+                            io.to(socketP).emit("receive_settings", room)
+                        });
+                    };
+                });
+            };
+        });
+    });
 });
 
 

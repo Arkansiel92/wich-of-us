@@ -1,0 +1,16 @@
+.game h1 {
+    font-size: 56px;
+}
+
+.game h2 {
+    font-size: 64px;
+    text-align: center;
+}
+
+.players {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    height: 400px;
+}

@@ -41,21 +41,22 @@ const GameSettings = () => {
 
     return (
         <div>
-            <h1>Paramètre de la partie</h1>
-            <div>
+            <h1>Préparation de la partie</h1>
+            <div className='card-players'>
             {
                 room !== ""
                 ? room.players.map((player, index) => (<CardPlayer key={index} player={player} />)) 
                 : <p style={{display : "none"}}></p>
             }
+            </div>
             <div className='btnGame'>
             {
-                ready == true && socket.id == room.author
+                ready === true && socket.id === room.author
                 ?   <input type="button" onClick={startGame} value="LANCER LA PARTIE" />
-                :   <input type="button" value="LANCER LA PARTIE" disabled />
+                :   <input type="button" value={"LANCER LA PARTIE (" + room.playersReady+"/"+room.nbrPlayers+")"} disabled />
             }
             </div>
-            </div>
+            
         </div>
     );
 };

@@ -11,7 +11,7 @@ const CreateRooms = () => {
     const [nbrPlayers, setNbrPlayers] = React.useState(2)
 
     const create_room = () => {
-        socket.emit("create_room", nbrPlayers)
+        socket.emit("create_room", Number(nbrPlayers))
         navigate("/GameSettings");
     }
 

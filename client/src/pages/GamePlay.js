@@ -8,6 +8,8 @@ const GamePlay = () => {
     const [room, setRoom] = React.useState("");
     const [questions, setQuestions] = React.useState([]);
 
+    var rand = Math.floor(Math.random()*questions.length);
+
     useEffect(() => {
         if (room === "") {
             socket.emit("settings_room");
@@ -26,14 +28,16 @@ const GamePlay = () => {
 
     })
     return (
-        <div>
+        <div className='game'>
             <h1>Qui de nous...</h1>
-            <h2>...{questions[0]} ?</h2>
+            <h2>...{questions[rand]} ?</h2>
+            <div className='players'>
             {
                 room !== ""
                 ? room.players.map((player, index) => (<Player key={index} player={player}/>)) 
                 : <p style={{display : "none"}}></p>
             }
+            </div>
         </div>
     );
 };

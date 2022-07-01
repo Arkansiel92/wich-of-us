@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import {socketContext} from "../context/socket"
 
 
@@ -12,9 +12,9 @@ const CardPlayer = ({player}) => {
     }
 
     return (
-        <div>
+        <div className='card-player'>
             <ul>
-                <li>Socket : {player.socket}</li>
+                <li>{player.socket}</li>
                 {
                 player.socket === socket.id 
                 ? <li><input type="text" value={name} onChange={(e)=> {setName(e.target.value)}} placeholder='Nom du joueur' required/></li>
@@ -22,8 +22,8 @@ const CardPlayer = ({player}) => {
                 }
                 {
                 player.socket === socket.id 
-                ? <li><input type="button" value="prêt" onClick={readyPlay} style={player.ready ? {background: "#367000"} : {background: "#B26700"}} /></li>
-                : <li><input type="button" value="prêt" style={player.ready ? {background: "#367000"} : {background: "#B26700"}} disabled /></li>
+                ? <li><input type="button" value={player.ready ? "j'suis prêt" : "pas encore prêt"} onClick={readyPlay} style={player.ready ? {background: "#367000"} : {background: "#B26700"}} /></li>
+                : <li><input type="button" value={player.ready ? "j'suis prêt" : "pas encore prêt"} style={player.ready ? {background: "#367000"} : {background: "#B26700"}} disabled /></li>
                 }   
             </ul>
         </div>
