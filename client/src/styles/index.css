@@ -2,4 +2,6 @@
 @import "./components/CreateRooms.css";
 @import "./components/RoomsOnline.css";
 @import "./components/Room.css";
+@import "./components/CardPlayers.css";
 @import "./pages/Home.css";
+@import "./pages/GameSettings.css";

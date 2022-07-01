@@ -1,0 +1,10 @@
+.Home-components {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+.title-Home {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 64px;
+}

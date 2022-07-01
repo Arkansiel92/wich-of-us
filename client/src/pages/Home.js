@@ -20,9 +20,12 @@ const Home = () => {
     }, [socket])
 
     return (
-        <div>
-            <CreateRooms/>
-            <RoomsOnline rooms={rooms} />
+        <div className='header-home'>
+            <h1 className='title-Home'>Qui de nous ?</h1>
+            <div className='Home-components'>
+                <CreateRooms/>
+                <RoomsOnline rooms={rooms} />
+            </div>
         </div>
     );
 };

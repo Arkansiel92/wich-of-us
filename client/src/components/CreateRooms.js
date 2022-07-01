@@ -18,7 +18,6 @@ const CreateRooms = () => {
     return (
         <div className='header-create-room'>
             <div className='create-room'>
-                <h1 className='title'>Qui de nous ?</h1>
                 <label htmlFor="">Nombre de joueurs : <select value={nbrPlayers} onChange={(e) => {setNbrPlayers(e.target.value)}} >
                     <option value="2">2</option>
                     <option value="3">3</option>
