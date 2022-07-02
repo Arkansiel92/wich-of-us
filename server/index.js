@@ -41,6 +41,7 @@ io.on("connection", (socket) => {
         ready : false,
         points : 0,
         vote : "",
+        nbrVote : 0,
     };
     console.log(socket.id);
 
@@ -70,7 +71,8 @@ io.on("connection", (socket) => {
             players : [user],
             sockets : [socket.id],
             nbrPlayers : nbrPlayers,
-            playersReady : 0
+            playersReady : 0,
+            finaleVote : ""
         };
         rooms.push(roomData);
     })
@@ -107,13 +109,13 @@ io.on("connection", (socket) => {
     socket.on("settings_questions", () => {
         rooms.forEach(room => {
             if (room.sockets.includes(socket.id)) {
-
                 room.players.forEach(player => {
                     player.ready = false; // remise à zéro de la préparation des participants
                 });
-
                 room.playersReady = 0;
-                io.emit("receive_questions", questions)
+                var rand = Math.floor(Math.random()*questions.length);
+                
+                io.emit("receive_questions", questions[rand])
             };
         });
     });
@@ -157,12 +159,27 @@ io.on("connection", (socket) => {
     });
 
     socket.on("vote", (data) => {
+        var i = 0
         rooms.forEach(room =>{
-            if (data.room == room.id) {
+            if (data.room == room.id) { // si le socket est dans la bonne room
                 room.players.forEach(player => {
                     if (data.player == player.socket) {
+                        if (player.vote === "") { // si le joueur n'a pas encore voté. incrémente de joueur qui ont voté
+                            room.playersReady++;
+                        };
                         player.vote = data.name
                         player.ready = true;
+                        if (data.name == player.name) { // si le name est pareil que le nom contre qui on a voté, incrémente des votes contre ce joueur.
+                            player.nbrVote++;
+                        }
+                        if (room.playersReady === room.nbrPlayers) { // si tout le monde a voté
+                            if (player.nbrVote > i) {
+                                i = player.nbrVote;
+                                room.vote = player.name; // récupération du joueur qui a eu le plus de vote
+                                console.log(player.name)
+                            }
+                            console.log("tout le monde a voté");
+                        };
                         room.sockets.forEach(socketP => {
                             io.to(socketP).emit("receive_settings", room)
                         });
