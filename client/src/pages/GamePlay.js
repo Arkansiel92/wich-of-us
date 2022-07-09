@@ -26,23 +26,28 @@ const GamePlay = () => {
 
     })
 
-    console.log(room.vote)
+    const settingsQuestions = () => {
+        socket.emit("settings_questions");
+    }
+
     return (
         <div className='game'>
             <h1>Qui de nous...</h1>
             <h2>...{questions} ?</h2>
             <div className='players'>
             {
-                room !== ""
+                room !== "" && room.finishRound === false
                 ? room.players.map((player, index) => (<Player key={index} player={player}/>)) 
-                : <p style={{display: "none"}}></p>
+                : <p>{room.finaleVote} a eu le plus de vote !</p>
             }
             </div>
+            <div>
             {
-                room.vote !== ""
-                ?   <p>{room.vote} a eu le plus de vote !</p>
-                :   <p></p>
+                room.author === socket.id && room.finishRound
+                ? <button onClick={settingsQuestions}>Prochain round</button>
+                : <p></p>
             }
+            </div>
         </div>
     );
 };

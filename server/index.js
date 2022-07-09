@@ -29,7 +29,15 @@ const questions = [
     "est le meilleur aux jeux vidéos",
     "est le plus raciste",
     "a eu le pire date",
-    "est le plus charismatique"
+    "est le plus charismatique",
+    "déteste le plus son métier/ses études",
+    "est le meilleur à fortnite",
+    "est le meilleur à Apex Legends",
+    "est le meilleur à Rocket League",
+    "tiens le mieux l'alcool",
+    "pourrait coucher avec la première meuf qu'il voit",
+    "est le plus à l'aise en public",
+    "déteste le plus maël"
 ]
 
 io.on("connection", (socket) => {
@@ -39,11 +47,23 @@ io.on("connection", (socket) => {
         name : "",
         host : false,
         ready : false,
+        isFinaleVote : false,
         points : 0,
         vote : "",
         nbrVote : 0,
     };
     console.log(socket.id);
+
+    function sendToSockets(roomID) {
+        rooms.forEach(room => {
+            if (room.id == roomID) {
+                room.players.forEach(player => {
+                    io.to(player.socket).emit("receive_settings", room);
+                });
+            };
+        });
+        return
+    };
 
     socket.on("disconnect", () => {
         console.log("user disconnected", socket.id);
@@ -72,23 +92,26 @@ io.on("connection", (socket) => {
             sockets : [socket.id],
             nbrPlayers : nbrPlayers,
             playersReady : 0,
+            finishRound : false,
             finaleVote : ""
         };
         rooms.push(roomData);
+        io.emit("load_rooms", rooms);
     })
 
     socket.on("check_rooms", () => {
         console.log("chargement des rooms...")
-        io.emit("load_rooms", rooms)
+        io.emit("load_rooms", rooms);
     })
 
     socket.on("join_room", (roomID) => {
         console.log(`un joueur a rejoint la partie`)
         rooms.forEach(room => {
             if (user.room !== roomID) {
+                user.room = roomID;
                 room.sockets.push(socket.id);
                 room.players.push(user);
-                user.room = roomID;
+                io.emit("load_rooms", rooms);
             } else {
                 return;
             };
@@ -97,25 +120,27 @@ io.on("connection", (socket) => {
 
     socket.on("settings_room", () => {
         console.log(`récupération des données de la room... de la part du socket : ${socket.id}`);
-        console.log(user);
-        console.log(rooms);
         rooms.forEach(room => {
             if (room.sockets.includes(socket.id)) {
-                io.emit("receive_settings", room)
+                room.sockets.forEach(socketP => {
+                    io.to(socketP).emit("receive_settings", room)
+                });
             };
         });
     });
 
     socket.on("settings_questions", () => {
+        var rand = Math.floor(Math.random()*questions.length);
         rooms.forEach(room => {
             if (room.sockets.includes(socket.id)) {
+                room.playersReady = 0;
+                room.finishRound = false;
                 room.players.forEach(player => {
                     player.ready = false; // remise à zéro de la préparation des participants
+                    player.vote = "";
+                    io.to(player.socket).emit("receive_questions", questions[rand]);
                 });
-                room.playersReady = 0;
-                var rand = Math.floor(Math.random()*questions.length);
-                
-                io.emit("receive_questions", questions[rand])
+                sendToSockets(room.id);       
             };
         });
     });
@@ -128,8 +153,6 @@ io.on("connection", (socket) => {
                         player.name = data.name;
                         player.ready = true;
                         room.playersReady++;
-                        console.log("Le joueur est pret "+room.playersReady);
-                        console.log(room);
                         if (room.playersReady === room.nbrPlayers) {
                             console.log("tous les joueurs sont prêt")
                             io.emit("readyToPlay", true);
@@ -159,31 +182,29 @@ io.on("connection", (socket) => {
     });
 
     socket.on("vote", (data) => {
-        var i = 0
-        rooms.forEach(room =>{
-            if (data.room == room.id) { // si le socket est dans la bonne room
+        rooms.forEach(room => {
+            if (room.id == data.room) {
                 room.players.forEach(player => {
-                    if (data.player == player.socket) {
-                        if (player.vote === "") { // si le joueur n'a pas encore voté. incrémente de joueur qui ont voté
-                            room.playersReady++;
-                        };
-                        player.vote = data.name
+                    if (player.socket == data.socket) {
+                        player.vote = data.name;
                         player.ready = true;
-                        if (data.name == player.name) { // si le name est pareil que le nom contre qui on a voté, incrémente des votes contre ce joueur.
-                            player.nbrVote++;
-                        }
-                        if (room.playersReady === room.nbrPlayers) { // si tout le monde a voté
-                            if (player.nbrVote > i) {
-                                i = player.nbrVote;
-                                room.vote = player.name; // récupération du joueur qui a eu le plus de vote
-                                console.log(player.name)
-                            }
-                            console.log("tout le monde a voté");
-                        };
-                        room.sockets.forEach(socketP => {
-                            io.to(socketP).emit("receive_settings", room)
-                        });
+                        room.playersReady++;
+                    } else if (player.name == data.name) {
+                        player.nbrVote++;
                     };
+
+                    nbrVoteFinale = 0;
+                    player.isFinaleVote = false;
+                    if (player.nbrVote > nbrVoteFinale) {
+                        nbrVoteFinale = player.nbrVote;
+                        room.finaleVote = player.name;
+                        player.isFinaleVote = true;
+                    };
+
+                    if (room.playersReady ==  room.nbrPlayers) {
+                        room.finishRound = true;
+                    };
+                    sendToSockets(data.room)
                 });
             };
         });

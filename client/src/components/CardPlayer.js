@@ -14,7 +14,6 @@ const CardPlayer = ({player}) => {
     return (
         <div className='card-player'>
             <ul>
-                <li>{player.socket}</li>
                 {
                 player.socket === socket.id 
                 ? <li><input type="text" value={name} onChange={(e)=> {setName(e.target.value)}} placeholder='Nom du joueur' required/></li>

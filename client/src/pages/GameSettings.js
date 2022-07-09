@@ -41,7 +41,7 @@ const GameSettings = () => {
 
     return (
         <div>
-            <h1>Préparation de la partie</h1>
+            <h1>Préparation de la partie (id : {room.id})</h1>
             <div className='card-players'>
             {
                 room !== ""
@@ -55,8 +55,7 @@ const GameSettings = () => {
                 ?   <input type="button" onClick={startGame} value="LANCER LA PARTIE" />
                 :   <input type="button" value={"LANCER LA PARTIE (" + room.playersReady+"/"+room.nbrPlayers+")"} disabled />
             }
-            </div>
-            
+            </div>          
         </div>
     );
 };
