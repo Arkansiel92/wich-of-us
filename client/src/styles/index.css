@@ -1,4 +1,5 @@
 @import "./settings.css";
+@import "./components/News.css";
 @import "./components/CreateRooms.css";
 @import "./components/RoomsOnline.css";
 @import "./components/Room.css";

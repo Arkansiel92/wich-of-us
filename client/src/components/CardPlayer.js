@@ -10,10 +10,15 @@ const CardPlayer = ({player}) => {
     const readyPlay = () => {
         socket.emit("ready", {socket: player.socket, name: name})
     }
-
+    
     return (
         <div className='card-player'>
             <ul>
+                {
+                    player.socket === socket.id
+                    ? <li><img src="streamlinehq-interface-user-single-interface-essential-600.svg" alt="" /></li>
+                    : <p style={{display : "none"}}></p>
+                }
                 {
                 player.socket === socket.id 
                 ? <li><input type="text" value={name} onChange={(e)=> {setName(e.target.value)}} placeholder='Nom du joueur' required/></li>
@@ -21,8 +26,8 @@ const CardPlayer = ({player}) => {
                 }
                 {
                 player.socket === socket.id 
-                ? <li><input type="button" value={player.ready ? "j'suis prêt" : "pas encore prêt"} onClick={readyPlay} style={player.ready ? {background: "#367000"} : {background: "#B26700"}} /></li>
-                : <li><input type="button" value={player.ready ? "j'suis prêt" : "pas encore prêt"} style={player.ready ? {background: "#367000"} : {background: "#B26700"}} disabled /></li>
+                ? <li><input type="image" onClick={readyPlay} src='streamlinehq-entertainment-control-button-power-2-entertainment-600.svg' alt='' style={player.ready ? {background: "#367000"} : {background: "#B26700"}} /></li>
+                : <li><input type="image" src='streamlinehq-entertainment-control-button-power-2-entertainment-600.svg' alt='' style={player.ready ? {background: "#367000"} : {background: "#B26700"}} disabled /></li>
                 }   
             </ul>
         </div>

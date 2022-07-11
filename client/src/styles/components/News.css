@@ -1,0 +1,16 @@
+.News-div {
+    margin-top: 50px;
+    max-width: 60%;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #5E4531;
+    border-radius: 16px;
+    padding: 100px;
+    align-items: center;
+    text-align: center;
+}
+
+h2 {
+    margin-top: 0px;
+}

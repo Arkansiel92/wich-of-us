@@ -5,7 +5,7 @@
 }
 
 .create-room {
-    background-color: rgb(36, 46, 43, .5);
+    background-color: #5E4531;
     border-radius: 16px;
     margin:auto;
     padding: 150px;
@@ -17,7 +17,8 @@ li {
 }
 
 input, select {
-    background-color: #BCC8C3;
+    background-color: #F5E2CC;
+    color: #5E4531;
     text-align: center;
     text-decoration: none;
     border: none;
@@ -28,7 +29,7 @@ input, select {
 }
 
 button {
-    background-color: #29335C;
+    background-color: #F5E2CC;
     padding: 10px;
     border: none;
     border-radius: 16px;
@@ -38,5 +39,6 @@ button {
 }
 
 button:hover {
-    background-color: #F3A712;
+    background-color: #281E15;
+    color: #F5E2CC;
 }
